@@ -3,584 +3,433 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>🎨 NDAYIKEZE APOLLINAIRE | Multimedia Storyteller</title>
+    <title>NDAYIKEZE APOLLINAIRE | Professional Portfolio</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;600;700;800&display=swap');
         
         body { 
-            font-family: 'Inter', sans-serif; 
-            background-color: #f8fafc; 
+            font-family: 'Plus Jakarta Sans', sans-serif; 
+            background-color: #fdfdfd; 
             scroll-behavior: smooth;
         }
 
-        .gradient-bg { 
-            background: linear-gradient(135deg, #1e40af 0%, #dc2626 50%, #166534 100%); 
+        .gradient-brand { 
+            background: linear-gradient(135deg, #1e3a8a 0%, #dc2626 50%, #166534 100%); 
         }
 
-        .card-hover { 
-            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1); 
-            position: relative;
-        }
-        
-        .card-hover:hover { 
-            transform: translateY(-12px); 
-            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.15); 
+        .glass-card {
+            background: rgba(255, 255, 255, 0.9);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(226, 232, 240, 0.8);
         }
 
-        .file-input-label { 
-            cursor: pointer; 
-            transition: all 0.2s ease; 
+        .profile-ring {
+            box-shadow: 0 0 0 8px white, 0 0 0 12px #eff6ff, 0 20px 25px -5px rgba(0,0,0,0.1);
         }
-        
-        .file-input-label:hover { 
-            border-color: #3b82f6; 
-            background-color: #eff6ff; 
-        }
-        
+
         #publishFormContainer, #aboutSectionContainer {
-            transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
-            max-height: 0;
+            display: none;
             opacity: 0;
-            overflow: hidden;
-        }
-        
-        #publishFormContainer.open, #aboutSectionContainer.open {
-            max-height: 2500px;
-            opacity: 1;
-            margin-top: 2.5rem;
-            margin-bottom: 2.5rem;
+            transform: translateY(10px);
+            transition: all 0.4s ease-out;
         }
 
-        .design-image {
-            width: 100%;
-            height: auto;
+        #publishFormContainer.active, #aboutSectionContainer.active {
             display: block;
-            object-fit: cover;
-            aspect-ratio: 16/10;
-            background-color: #f1f5f9;
-            cursor: zoom-in;
-        }
-
-        .hero-title {
-            font-size: clamp(2rem, 6vw, 3.5rem);
-            line-height: 1.1;
-            font-weight: 800;
+            opacity: 1;
+            transform: translateY(0);
         }
 
         .modal-overlay {
             display: none;
             position: fixed;
             inset: 0;
-            background: rgba(15, 23, 42, 0.95);
-            backdrop-filter: blur(10px);
-            z-index: 100;
+            background: rgba(2, 6, 23, 0.85);
+            backdrop-filter: blur(8px);
+            z-index: 1000;
             align-items: center;
             justify-content: center;
-            padding: 1.5rem;
-        }
-
-        .custom-scrollbar::-webkit-scrollbar {
-            width: 6px;
-        }
-        .custom-scrollbar::-webkit-scrollbar-track {
-            background: #f1f5f9;
-        }
-        .custom-scrollbar::-webkit-scrollbar-thumb {
-            background: #cbd5e1;
-            border-radius: 10px;
-        }
-
-        .profile-edit-overlay {
-            position: absolute;
-            inset: 0;
-            background: rgba(0, 0, 0, 0.6);
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            color: white;
-            opacity: 0;
-            transition: opacity 0.3s ease;
-            cursor: pointer;
-            z-index: 20;
-            text-align: center;
             padding: 1rem;
         }
 
-        #profileFrame.admin-active:hover .profile-edit-overlay {
-            opacity: 1;
+        .admin-badge {
+            animation: pulse 2s infinite;
         }
 
-        .delete-btn {
-            position: absolute;
-            top: 1rem;
-            right: 1rem;
-            background: #ef4444;
-            color: white;
-            width: 32px;
-            height: 32px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 18px;
-            font-weight: bold;
-            cursor: pointer;
-            z-index: 30;
-            transition: all 0.2s;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.2);
-            border: 2px solid white;
-        }
-        .delete-btn:hover {
-            background: #dc2626;
-            transform: scale(1.1);
-        }
-
-        #lightboxImage {
-            max-width: 100%;
-            max-height: 65vh;
-            border-radius: 1rem;
-            object-fit: contain;
-        }
-
-        .visit-btn {
-            background: #2563eb;
-            color: white;
-            padding: 1rem 2.5rem;
-            border-radius: 9999px;
-            font-weight: 800;
-            text-transform: uppercase;
-            letter-spacing: 0.1em;
-            font-size: 0.75rem;
-            transition: all 0.3s ease;
-            box-shadow: 0 10px 20px -5px rgba(37, 99, 235, 0.4);
-            display: inline-flex;
-            align-items: center; gap: 0.5rem;
-        }
-
-        .visit-btn:hover {
-            background: #1d4ed8;
-            transform: translateY(-2px);
-            box-shadow: 0 15px 30px -10px rgba(37, 99, 235, 0.6);
-        }
-        
-        .text-justify {
-            text-align: justify;
-            text-justify: inter-word;
+        @keyframes pulse {
+            0% { opacity: 1; }
+            50% { opacity: 0.5; }
+            100% { opacity: 1; }
         }
     </style>
 </head>
-<body class="text-slate-900 custom-scrollbar">
+<body class="text-slate-900">
 
-    <!-- Admin Access Modal -->
-    <div id="codeModal" class="modal-overlay">
-        <div class="bg-white p-10 rounded-3xl shadow-2xl max-w-sm w-full mx-4 border border-slate-100">
-            <div class="w-16 h-16 bg-slate-100 rounded-2xl flex items-center justify-center text-2xl mb-6 mx-auto">🔐</div>
-            <h3 class="text-2xl font-bold mb-2 text-center">Admin Access</h3>
-            <p class="text-sm text-slate-500 mb-8 text-center">Enter security code to manage works.</p>
-            <div class="space-y-4">
-                <input type="password" id="modalCodeInput" placeholder="••••••" 
-                    class="w-full p-4 bg-slate-50 border border-slate-200 rounded-xl focus:ring-2 focus:ring-blue-500 outline-none text-center text-lg font-bold tracking-widest">
-                <div class="flex gap-3 pt-2">
-                    <button onclick="closeCodeModal()" class="flex-1 px-4 py-3 text-slate-500 font-bold hover:text-slate-800 uppercase text-xs">Cancel</button>
-                    <button onclick="verifyAccessCode()" class="flex-1 bg-slate-900 text-white px-4 py-3 rounded-xl font-bold hover:bg-black uppercase text-xs">Verify</button>
-                </div>
+    <!-- Lightbox for Images -->
+    <div id="lightbox" class="modal-overlay" onclick="closeLightbox()">
+        <div class="max-w-5xl w-full max-h-[90vh] overflow-y-auto bg-white rounded-3xl overflow-hidden relative" onclick="event.stopPropagation()">
+            <img id="lbImg" src="" class="w-full h-auto object-cover">
+            <div class="p-8 md:p-12">
+                <h2 id="lbTitle" class="text-3xl font-extrabold mb-4"></h2>
+                <p id="lbDesc" class="text-slate-600 leading-relaxed mb-8 text-lg"></p>
+                <div id="lbLink"></div>
             </div>
-            <p id="modalError" class="text-red-500 text-xs mt-4 text-center h-4 font-semibold"></p>
+            <button onclick="closeLightbox()" class="absolute top-4 right-4 bg-black/50 text-white p-2 rounded-full hover:bg-black">✕</button>
         </div>
     </div>
 
-    <!-- Confirm Unpublish Modal -->
-    <div id="confirmModal" class="modal-overlay">
-        <div class="bg-white p-10 rounded-3xl shadow-2xl max-sm w-full mx-4 border border-slate-100">
-            <div class="w-16 h-16 bg-red-100 text-red-600 rounded-2xl flex items-center justify-center text-3xl mb-6 mx-auto">⚠️</div>
-            <h3 class="text-2xl font-bold mb-2 text-center">Unpublish Work?</h3>
-            <p class="text-sm text-slate-500 mb-8 text-center">This removal is permanent.</p>
-            <div class="flex gap-3">
-                <button onclick="closeConfirmModal()" class="flex-1 px-4 py-3 bg-slate-100 text-slate-600 font-bold rounded-xl hover:bg-slate-200 uppercase text-xs">Keep it</button>
-                <button id="confirmDeleteBtn" class="flex-1 bg-red-600 text-white px-4 py-3 rounded-xl font-bold hover:bg-red-700 uppercase text-xs">Delete</button>
+    <!-- Admin Auth Modal -->
+    <div id="authModal" class="modal-overlay">
+        <div class="bg-white p-8 rounded-3xl shadow-2xl w-full max-w-sm border border-slate-100">
+            <h3 class="text-2xl font-bold mb-2 text-center">Admin Verification</h3>
+            <p class="text-slate-500 text-sm mb-6 text-center">Please enter your 6-digit access code.</p>
+            <input type="password" id="authCode" placeholder="••••••" class="w-full p-4 border rounded-2xl text-center text-2xl tracking-widest mb-4 outline-none focus:ring-2 focus:ring-blue-500">
+            <div class="flex gap-2">
+                <button onclick="closeAuthModal()" class="flex-1 py-3 text-slate-500 font-bold uppercase text-xs">Cancel</button>
+                <button onclick="verifyAdmin()" class="flex-1 bg-blue-600 text-white py-3 rounded-xl font-bold uppercase text-xs hover:bg-blue-700">Login</button>
             </div>
+            <p id="authError" class="text-red-500 text-xs text-center mt-3 h-4 font-bold"></p>
         </div>
     </div>
 
-    <!-- Full Project Modal -->
-    <div id="lightboxModal" class="modal-overlay" onclick="closeLightbox()">
-        <button class="absolute top-6 right-6 text-white bg-white/10 hover:bg-white/20 p-4 rounded-full z-[110]">
-            <svg xmlns="http://www.w3.org/2000/svg" class="w-8 h-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
-            </svg>
-        </button>
-        <div class="relative flex flex-col items-center max-w-5xl w-full max-h-full overflow-y-auto p-4 custom-scrollbar" onclick="event.stopPropagation()">
-            <img id="lightboxImage" src="" alt="Project View" class="shadow-2xl">
-            <div class="mt-8 text-center text-white w-full">
-                <h3 id="lightboxTitle" class="text-3xl font-black mb-4"></h3>
-                <div id="lightboxDesc" class="text-slate-300 max-w-2xl mx-auto text-base leading-relaxed description-content mb-8"></div>
-                <div id="lightboxLinkContainer" class="pb-10"></div>
+    <!-- Header Section -->
+    <header class="gradient-brand text-white py-24 px-6 relative overflow-hidden">
+        <div class="max-w-6xl mx-auto text-center relative z-10">
+            <div class="inline-block bg-white/10 backdrop-blur-md px-6 py-2 rounded-full mb-6 border border-white/20">
+                <span class="text-sm font-bold tracking-[0.2em] uppercase">Visual Storyteller & Multimedia Expert</span>
             </div>
-        </div>
-    </div>
-
-    <header class="gradient-bg text-white py-20 px-4 shadow-2xl relative overflow-hidden">
-        <div class="absolute top-0 left-0 w-full h-full opacity-10 pointer-events-none">
-            <svg width="100%" height="100%"><rect width="100%" height="100%" fill="url(#grid)" /><defs><pattern id="grid" width="40" height="40" patternUnits="userSpaceOnUse"><path d="M 40 0 L 0 0 0 40" fill="none" stroke="white" stroke-width="1"/></pattern></defs></svg>
-        </div>
-        
-        <div class="max-w-5xl mx-auto relative z-10 text-center">
-            <div class="inline-block bg-green-700/80 backdrop-blur-md px-8 py-4 rounded-[2rem] mb-8 border border-white/20 shadow-2xl">
-                <span class="font-black tracking-tight uppercase leading-none block text-[34px]">NDAYIKEZE APOLLINAIRE</span>
-            </div>
-            <h1 class="hero-title mb-6 drop-shadow-2xl">Creative Portfolio Hub</h1>
-            <p class="text-lg md:text-xl text-white/90 max-w-2xl mx-auto font-light leading-relaxed mb-8">
-                15+ years of <span class="font-bold">Multimedia Storytelling</span> and Visionary Design expertise.
+            <h1 class="text-5xl md:text-7xl font-extrabold mb-6 tracking-tight">NDAYIKEZE Apollinaire</h1>
+            <p class="text-xl md:text-2xl text-white/80 max-w-3xl mx-auto font-light mb-10">
+                Crafting digital experiences through photography, video, and strategic design for over 15 years.
             </p>
-            <div class="inline-block bg-white px-8 py-4 rounded-full shadow-2xl border border-white/50">
-                <p class="text-green-700 font-bold text-sm md:text-base tracking-wide flex flex-wrap justify-center gap-4">
-                    <span>📧 ndayikezeapollinaire@gmail.com</span>
-                    <span class="hidden md:inline text-slate-200">|</span>
-                    <span>📱 +257 62 020 750</span>
-                </p>
+            <div class="flex flex-wrap justify-center gap-4 text-sm font-semibold">
+                <div class="bg-white/20 px-4 py-2 rounded-lg">📧 ndayikezeapollinaire@gmail.com</div>
+                <div class="bg-white/20 px-4 py-2 rounded-lg">📱 +257 62 020 750</div>
             </div>
         </div>
     </header>
 
-    <main class="max-w-7xl mx-auto px-6 py-16">
-        <div class="flex flex-col sm:flex-row justify-center gap-6 mb-16">
-            <button onclick="toggleAboutSection()" id="aboutBtn" class="flex items-center justify-center gap-3 bg-white border-2 border-slate-900 text-slate-900 px-10 py-5 rounded-2xl font-black shadow-sm transition-all hover:bg-slate-900 hover:text-white">
-                <span id="aboutIcon" class="text-2xl">👤</span>
-                <span id="aboutText" class="uppercase tracking-widest text-xs sm:text-sm">Professional Profile</span>
+    <main class="max-w-7xl mx-auto px-6 -mt-10 pb-24">
+        <!-- Navigation Tabs -->
+        <div class="flex justify-center gap-4 mb-16 relative z-20">
+            <button onclick="toggleSection('aboutSectionContainer')" class="glass-card px-8 py-4 rounded-2xl font-bold flex items-center gap-3 hover:bg-slate-50 transition-all shadow-lg">
+                <span>👤</span> Profile
             </button>
-            <button onclick="handlePublishClick()" id="toggleBtn" class="flex items-center justify-center gap-3 bg-slate-900 text-white px-10 py-5 rounded-2xl font-black shadow-xl transition-all hover:bg-black">
-                <span id="toggleIcon" class="text-2xl">➕</span>
-                <span id="toggleText" class="uppercase tracking-widest text-xs sm:text-sm">Publish New Work</span>
+            <button onclick="checkAdminBeforePublish()" class="bg-slate-900 text-white px-8 py-4 rounded-2xl font-bold flex items-center gap-3 hover:bg-black transition-all shadow-xl">
+                <span>✨</span> Publish Work
             </button>
         </div>
 
+        <!-- About Section -->
         <div id="aboutSectionContainer">
-            <section class="bg-white rounded-[2.5rem] shadow-2xl p-10 md:p-16 max-w-5xl mx-auto border border-blue-50 mb-20 relative overflow-hidden">
-                <div class="flex flex-col md:flex-row items-center md:items-start gap-12 relative z-10">
-                    <div class="flex-shrink-0">
-                        <div id="profileFrame" class="w-56 h-56 bg-slate-100 rounded-[3rem] border-8 border-white shadow-2xl overflow-hidden flex items-center justify-center relative group">
-                            <img id="profileImageDisplay" src="" class="w-full h-full object-cover hidden">
-                            <div id="profilePlaceholder" class="text-7xl text-slate-300">👤</div>
-                            <label id="profileEditOverlay" class="profile-edit-overlay hidden">
-                                <span class="text-2xl mb-1">📸</span>
-                                <span class="text-[10px] font-black uppercase tracking-widest">Update Photo</span>
-                                <input type="file" id="profileInput" class="hidden" accept="image/*" onchange="window.handleProfileUpload(this)">
-                            </label>
+            <section class="glass-card rounded-[3rem] p-10 md:p-16 mb-20 max-w-5xl mx-auto shadow-2xl border-white">
+                <div class="flex flex-col md:flex-row gap-12 items-center">
+                    <div class="relative group">
+                        <div class="w-64 h-64 rounded-[3rem] overflow-hidden profile-ring bg-slate-100 flex items-center justify-center">
+                            <img id="profileDisplay" src="" class="w-full h-full object-cover hidden">
+                            <span id="profileIcon" class="text-8xl">👤</span>
                         </div>
-                        <p id="profileUpdateStatus" class="text-center text-[10px] font-black text-blue-600 uppercase mt-4 h-4"></p>
+                        <label id="adminProfileOverlay" class="hidden absolute inset-0 bg-black/60 rounded-[3rem] items-center justify-center flex flex-col text-white cursor-pointer opacity-0 group-hover:opacity-100 transition-opacity">
+                            <span class="text-3xl">📸</span>
+                            <span class="text-[10px] font-bold uppercase mt-2">Change Photo</span>
+                            <input type="file" id="profileInput" class="hidden" accept="image/*" onchange="uploadProfile(this)">
+                        </label>
                     </div>
-                    <div class="flex-grow">
-                        <div class="flex items-center gap-4 mb-6">
-                            <div class="w-12 h-12 bg-blue-600 rounded-2xl flex items-center justify-center text-xl shadow-lg shadow-blue-200">✨</div>
-                            <h2 class="text-4xl font-black text-slate-900 tracking-tight">Expert Profile</h2>
-                        </div>
-                        <div class="text-slate-700 leading-relaxed text-lg space-y-6 max-w-2xl text-justify">
-                            <p>
-                                <span class="font-black text-blue-600">My name is Ndayikeze Apollinaire</span>. I am a creative and visionary multimedia storyteller with over 15 years of experience in content creation, audiovisual communication and digital marketing. My background is unique because I combine technical expertise in IT systems with advanced skills in video editing, photography and graphic design.
-                            </p>
-                            <div class="pt-4 flex flex-wrap gap-2">
-                                <span class="px-4 py-2 bg-slate-100 rounded-full text-xs font-bold text-slate-600 uppercase tracking-widest">Multimedia</span>
-                                <span class="px-4 py-2 bg-slate-100 rounded-full text-xs font-bold text-slate-600 uppercase tracking-widest">Storytelling</span>
-                                <span class="px-4 py-2 bg-slate-100 rounded-full text-xs font-bold text-slate-600 uppercase tracking-widest">Visual Identity</span>
-                            </div>
+                    <div class="flex-1">
+                        <h2 class="text-3xl font-black mb-6 text-slate-800">Professional Summary</h2>
+                        <div class="text-lg text-slate-600 leading-relaxed space-y-4">
+                            <p>My name is <span class="text-blue-600 font-bold">Ndayikeze Apollinaire</span>. I am a creative multimedia storyteller with extensive experience in content creation, audiovisual communication, and digital marketing.</p>
+                            <p>I specialize in bridging the gap between technical IT systems and visual artistry, bringing a unique dual-perspective to every project I undertake.</p>
                         </div>
                     </div>
                 </div>
             </section>
         </div>
 
+        <!-- Publish Form -->
         <div id="publishFormContainer">
-            <section class="bg-white rounded-[2.5rem] shadow-2xl p-10 max-w-2xl mx-auto border border-slate-100 mb-20">
-                <div class="text-center mb-10">
-                    <h2 class="text-3xl font-black text-slate-900 mb-2">Portfolio Manager</h2>
-                    <p class="text-slate-500 font-medium">Add a new dimension to your gallery</p>
-                </div>
-                <div class="space-y-8">
-                    <div class="grid grid-cols-1 gap-6">
-                        <input type="text" id="designTitle" placeholder="Project Title" class="w-full p-5 bg-slate-50 border border-slate-200 rounded-2xl outline-none font-semibold">
-                        <input type="text" id="sourceUrl" placeholder="Embedded Project Link (YouTube/Behance/etc)" class="w-full p-5 bg-slate-50 border border-slate-200 rounded-2xl outline-none">
-                        <textarea id="designDesc" rows="4" placeholder="Description Story..." class="w-full p-5 bg-slate-50 border border-slate-200 rounded-2xl outline-none resize-none font-medium"></textarea>
-                        
-                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                            <label class="file-input-label flex flex-col items-center justify-center w-full h-48 border-2 border-dashed border-slate-300 rounded-3xl bg-slate-50">
-                                <span class="text-4xl mb-3">🖼️</span>
-                                <p class="text-[10px] font-black text-slate-500 uppercase tracking-widest text-center" id="fileNameDisplay">Upload Visual</p>
-                                <input type="file" id="imageFile" class="hidden" accept="image/*" onchange="handleFileSelect(this)">
-                            </label>
-                            <div class="flex flex-col gap-2">
-                                <input type="text" id="designUrl" placeholder="Or paste Image URL" class="w-full p-5 bg-slate-50 border border-slate-200 rounded-2xl outline-none">
-                                <p class="text-[9px] text-slate-400 font-bold uppercase tracking-widest px-2">Cloud Storage is active for uploads</p>
-                            </div>
-                        </div>
-                        <div id="imagePreviewContainer" class="hidden">
-                            <img id="imagePreview" src="" class="w-full h-auto max-h-[300px] object-contain rounded-2xl border border-slate-200">
+            <section class="glass-card rounded-[3rem] p-8 md:p-12 mb-20 max-w-2xl mx-auto shadow-2xl">
+                <h2 class="text-2xl font-bold mb-8 text-center">Add Project to Gallery</h2>
+                <div class="space-y-6">
+                    <input type="text" id="pTitle" placeholder="Project Title" class="w-full p-4 border rounded-2xl outline-none focus:border-blue-500">
+                    <textarea id="pDesc" rows="4" placeholder="Detailed Description..." class="w-full p-4 border rounded-2xl outline-none focus:border-blue-500"></textarea>
+                    <input type="text" id="pLink" placeholder="External Link (Behance, YouTube, etc.)" class="w-full p-4 border rounded-2xl outline-none focus:border-blue-500">
+                    
+                    <div class="flex flex-col gap-4">
+                        <label class="w-full h-40 border-2 border-dashed border-slate-300 rounded-3xl flex flex-col items-center justify-center cursor-pointer hover:bg-slate-50">
+                            <span class="text-4xl mb-2">🖼️</span>
+                            <span class="text-xs font-bold text-slate-400 uppercase tracking-widest" id="fileStatus">Upload Thumbnail</span>
+                            <input type="file" id="pImage" class="hidden" accept="image/*" onchange="previewImage(this)">
+                        </label>
+                        <div id="previewBox" class="hidden w-full h-48 rounded-2xl overflow-hidden border">
+                            <img id="previewImg" src="" class="w-full h-full object-cover">
                         </div>
                     </div>
-                    <button onclick="publishDesign()" id="publishBtn" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-black py-6 rounded-3xl shadow-xl uppercase tracking-widest">Publish Live</button>
-                    <p id="statusMsg" class="text-center text-xs font-black mt-2 min-h-[20px] tracking-wider"></p>
+
+                    <button id="saveBtn" onclick="saveProject()" class="w-full bg-blue-600 text-white font-bold py-5 rounded-2xl hover:bg-blue-700 transition-all uppercase tracking-widest">Post Live</button>
+                    <p id="saveStatus" class="text-center text-xs font-bold h-4 text-blue-600"></p>
                 </div>
             </section>
         </div>
 
-        <div class="flex flex-col items-center mb-16">
-            <h2 class="text-5xl font-black text-slate-900 mb-4 tracking-tight">Curated Works</h2>
-            <div class="h-2 w-32 bg-gradient-to-r from-blue-600 via-red-600 to-green-600 rounded-full mb-4"></div>
-            <p class="text-slate-400 font-bold uppercase tracking-[0.4em] text-[10px]">Professional Showcase</p>
+        <!-- Gallery -->
+        <div class="text-center mb-12">
+            <h2 class="text-4xl font-extrabold text-slate-900 mb-2">Featured Gallery</h2>
+            <p class="text-slate-400 font-bold uppercase tracking-widest text-[10px]">Recent Works & Collaborations</p>
         </div>
 
-        <div id="gallery" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-12 mb-24 items-start">
-            <!-- Items loaded from Firestore -->
+        <div id="galleryGrid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            <!-- Dynamic Content -->
+            <div class="col-span-full py-20 text-center text-slate-300">Initializing database...</div>
         </div>
     </main>
 
-    <footer class="py-20 text-center bg-slate-900 text-white">
-        <p class="text-[11px] font-black uppercase tracking-[0.2em] opacity-60">
-            &copy; 2026 NDAYIKEZE APOLLINAIRE • PROFESSIONAL HUB
-        </p>
+    <footer class="bg-slate-950 text-white py-16 text-center">
+        <p class="text-xs font-bold tracking-[0.4em] opacity-40 uppercase">&copy; 2026 NDAYIKEZE Apollinaire • BUJUMBURA</p>
     </footer>
 
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
         import { getAuth, signInAnonymously, signInWithCustomToken, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
-        import { getFirestore, collection, doc, setDoc, onSnapshot, addDoc, deleteDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+        import { getFirestore, collection, doc, setDoc, onSnapshot, addDoc, deleteDoc, serverTimestamp, getDoc } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
 
-        // CONFIGURATION
-        const SECRET_CODE = "198026";
-        const SESSION_KEY = 'portfolio_admin_expiry';
+        // Constants
+        const ADMIN_CODE = "198026";
+        const SESSION_TIMEOUT = 7200000; // 2 hours
+        const appId = typeof __app_id !== 'undefined' ? __app_id : 'apollinaire-v3-final';
+        
+        // Firebase Setup
         const firebaseConfig = JSON.parse(__firebase_config);
         const app = initializeApp(firebaseConfig);
         const auth = getAuth(app);
         const db = getFirestore(app);
-        const appId = typeof __app_id !== 'undefined' ? __app_id : 'apollinaire-cloud-v1';
 
-        let currentUser = null;
-        let pendingImg = null;
-        let designs = [];
+        let user = null;
+        let pendingBase64 = null;
+        let isAdmin = false;
 
-        // ADMIN LOGIC
-        window.isAdminActive = () => {
-            const expiry = localStorage.getItem(SESSION_KEY);
-            return expiry && Date.now() < parseInt(expiry);
-        };
-
-        window.handlePublishClick = () => {
-            if (window.isAdminActive()) togglePublishForm();
-            else {
-                document.getElementById('codeModal').style.display = 'flex';
-                document.getElementById('modalCodeInput').focus();
-            }
-        };
-
-        window.verifyAccessCode = () => {
-            const input = document.getElementById('modalCodeInput');
-            if (input.value === SECRET_CODE) {
-                localStorage.setItem(SESSION_KEY, (Date.now() + 7200000).toString()); // 2 hours
-                document.getElementById('codeModal').style.display = 'none';
-                togglePublishForm();
-            } else {
-                document.getElementById('modalError').textContent = "Access Denied";
-            }
-        };
-
-        window.closeCodeModal = () => document.getElementById('codeModal').style.display = 'none';
-        window.closeConfirmModal = () => document.getElementById('confirmModal').style.display = 'none';
-
-        function togglePublishForm() {
-            const container = document.getElementById('publishFormContainer');
-            const isOpen = container.classList.toggle('open');
-            document.getElementById('toggleText').textContent = isOpen ? "Close Manager" : "Publish New Work";
-            
-            const overlay = document.getElementById('profileEditOverlay');
-            if (overlay) overlay.classList.toggle('hidden', !isOpen);
-            const frame = document.getElementById('profileFrame');
-            if (frame) frame.classList.toggle('admin-active', isOpen);
-            
-            render();
-        }
-
-        window.toggleAboutSection = () => {
-            const container = document.getElementById('aboutSectionContainer');
-            const isOpen = container.classList.toggle('open');
-            document.getElementById('aboutText').textContent = isOpen ? "Hide Profile" : "Professional Profile";
-            if(isOpen) container.scrollIntoView({ behavior: 'smooth' });
-        };
-
-        // IMAGE HANDLING
-        async function compress(base64) {
-            return new Promise(res => {
-                const i = new Image(); 
-                i.src = base64;
-                i.onload = () => {
-                    const c = document.createElement('canvas');
-                    let w = i.width, h = i.height, m = 1200;
-                    if (w > h) { if (w > m) { h *= m/w; w = m; } } else { if (h > m) { w *= m/h; h = m; } }
-                    c.width = w; c.height = h;
-                    const ctx = c.getContext('2d');
-                    ctx.drawImage(i, 0, 0, w, h);
-                    res(c.toDataURL('image/jpeg', 0.7));
-                };
-            });
-        }
-
-        window.handleFileSelect = e => {
-            const f = e.files[0];
-            if (!f) return;
-            const r = new FileReader();
-            r.onload = async x => {
-                pendingImg = await compress(x.target.result);
-                document.getElementById('imagePreview').src = pendingImg;
-                document.getElementById('imagePreviewContainer').classList.remove('hidden');
-                document.getElementById('fileNameDisplay').textContent = f.name;
-            };
-            r.readAsDataURL(f);
-        };
-
-        window.handleProfileUpload = e => {
-            const f = e.files[0];
-            if (!f) return;
-            const r = new FileReader();
-            r.onload = async x => {
-                const res = await compress(x.target.result);
-                if (currentUser) {
-                    const status = document.getElementById('profileUpdateStatus');
-                    status.textContent = "Saving to cloud...";
-                    await setDoc(doc(db, 'artifacts', appId, 'public', 'data', 'profile', 'active'), { 
-                        imageUrl: res, 
-                        updatedAt: serverTimestamp() 
-                    });
-                    status.textContent = "Profile photo saved!";
-                    setTimeout(() => status.textContent = "", 2000);
-                }
-            };
-            r.readAsDataURL(f);
-        };
-
-        // FIREBASE SYNC
+        // AUTH PROTOCOL
         const initAuth = async () => {
-            if (typeof __initial_auth_token !== 'undefined' && __initial_auth_token) {
-                await signInWithCustomToken(auth, __initial_auth_token);
-            } else {
-                await signInAnonymously(auth);
-            }
+            try {
+                if (typeof __initial_auth_token !== 'undefined' && __initial_auth_token) {
+                    await signInWithCustomToken(auth, __initial_auth_token);
+                } else {
+                    await signInAnonymously(auth);
+                }
+            } catch (err) { console.error("Auth error", err); }
         };
 
         onAuthStateChanged(auth, u => {
-            currentUser = u;
+            user = u;
             if (u) {
-                // Sync Profile
-                onSnapshot(doc(db, 'artifacts', appId, 'public', 'data', 'profile', 'active'), s => {
-                    if (s.exists()) {
-                        const data = s.data();
-                        const img = document.getElementById('profileImageDisplay');
-                        const placeholder = document.getElementById('profilePlaceholder');
-                        if(img && data.imageUrl) {
-                            img.src = data.imageUrl;
-                            img.classList.remove('hidden');
-                            if(placeholder) placeholder.classList.add('hidden');
-                        }
-                    }
-                }, e => console.error("Profile sync error"));
-
-                // Sync Gallery
-                onSnapshot(collection(db, 'artifacts', appId, 'public', 'data', 'designs'), s => {
-                    designs = s.docs.map(d => ({ id: d.id, ...d.data() }))
-                        .sort((a,b) => (b.createdAt?.toMillis?.() || 0) - (a.createdAt?.toMillis?.() || 0));
-                    render();
-                }, e => console.error("Gallery sync error"));
+                checkAdminSession();
+                syncData();
             }
         });
 
         initAuth();
 
-        // RENDER LOGIC
-        function render() {
-            const g = document.getElementById('gallery');
-            if (!g) return;
-            const admin = window.isAdminActive();
-            g.innerHTML = '';
-            
-            if (designs.length === 0) {
-                g.innerHTML = '<div class="col-span-full text-center py-20 text-slate-400 font-bold uppercase tracking-widest">No projects available</div>';
-                return;
-            }
+        // DATA SYNC
+        function syncData() {
+            // Profile Sync
+            onSnapshot(doc(db, 'artifacts', appId, 'public', 'data', 'config', 'profile'), (s) => {
+                if (s.exists()) {
+                    const data = s.data();
+                    const disp = document.getElementById('profileDisplay');
+                    const icon = document.getElementById('profileIcon');
+                    if (data.url) {
+                        disp.src = data.url;
+                        disp.classList.remove('hidden');
+                        icon.classList.add('hidden');
+                    }
+                }
+            }, (e) => console.log("Profile stream error"));
 
-            designs.forEach(d => {
-                const el = document.createElement('div');
-                el.className = "card-hover bg-white rounded-[2.5rem] shadow-xl overflow-hidden flex flex-col h-full";
-                
-                const deleteBtn = admin ? `<button class="delete-btn" onclick="event.stopPropagation(); window.delWork('${d.id}')">✕</button>` : '';
-                
-                el.innerHTML = `
-                    ${deleteBtn}
-                    <div class="bg-slate-100 aspect-video overflow-hidden">
-                        <img src="${d.url}" class="design-image" onclick="window.openLightbox('${d.url}', '${d.title.replace(/'/g, "\\'")}', '${d.description.replace(/'/g, "\\'")}', '${d.sourceUrl}')">
-                    </div>
-                    <div class="p-8 flex flex-col flex-grow">
-                        <h3 class="font-black text-xl mb-4 flex items-center justify-between gap-3 truncate">${d.title}</h3>
-                        <p class="text-slate-500 text-sm line-clamp-3 mb-6 text-justify">${d.description}</p>
-                        <div class="mt-auto flex justify-between items-center">
-                            ${d.sourceUrl ? `<a href="${d.sourceUrl}" target="_blank" class="text-blue-600 font-black text-[10px] uppercase tracking-widest hover:underline">View Source</a>` : '<span></span>'}
-                            <button onclick="window.openLightbox('${d.url}', '${d.title.replace(/'/g, "\\'")}', '${d.description.replace(/'/g, "\\'")}', '${d.sourceUrl}')" class="text-slate-400 font-black text-[10px] uppercase tracking-widest">Details</button>
-                        </div>
-                    </div>`;
-                g.appendChild(el);
+            // Projects Sync
+            onSnapshot(collection(db, 'artifacts', appId, 'public', 'data', 'projects'), (s) => {
+                const list = s.docs.map(d => ({ id: d.id, ...d.data() }))
+                    .sort((a,b) => (b.createdAt?.toMillis() || 0) - (a.createdAt?.toMillis() || 0));
+                renderGallery(list);
+            }, (e) => console.log("Gallery stream error"));
+        }
+
+        // ADMIN LOGIC
+        function checkAdminSession() {
+            const expiry = localStorage.getItem('ap_admin_expiry');
+            if (expiry && Date.now() < parseInt(expiry)) {
+                activateAdminUI();
+            }
+        }
+
+        window.verifyAdmin = () => {
+            const code = document.getElementById('authCode').value;
+            if (code === ADMIN_CODE) {
+                localStorage.setItem('ap_admin_expiry', (Date.now() + SESSION_TIMEOUT).toString());
+                activateAdminUI();
+                closeAuthModal();
+                toggleSection('publishFormContainer');
+            } else {
+                const err = document.getElementById('authError');
+                err.textContent = "Invalid Code";
+                setTimeout(() => err.textContent = "", 2000);
+            }
+        };
+
+        function activateAdminUI() {
+            isAdmin = true;
+            document.getElementById('adminProfileOverlay').classList.remove('hidden');
+            renderGallery(); // Re-render to show delete buttons
+        }
+
+        window.checkAdminBeforePublish = () => {
+            if (isAdmin) toggleSection('publishFormContainer');
+            else document.getElementById('authModal').style.display = 'flex';
+        };
+
+        // UI HELPERS
+        window.toggleSection = (id) => {
+            const el = document.getElementById(id);
+            const isActive = el.classList.contains('active');
+            
+            // Hide all first
+            document.getElementById('aboutSectionContainer').classList.remove('active');
+            document.getElementById('publishFormContainer').classList.remove('active');
+            
+            if (!isActive) {
+                el.classList.add('active');
+                el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            }
+        };
+
+        window.closeAuthModal = () => document.getElementById('authModal').style.display = 'none';
+
+        // IMAGE PROCESSING
+        async function processImage(file) {
+            return new Promise(res => {
+                const reader = new FileReader();
+                reader.onload = (e) => {
+                    const img = new Image();
+                    img.onload = () => {
+                        const canvas = document.createElement('canvas');
+                        let w = img.width, h = img.height;
+                        const max = 1200;
+                        if (w > h && w > max) { h *= max/w; w = max; }
+                        else if (h > max) { w *= max/h; h = max; }
+                        canvas.width = w; canvas.height = h;
+                        canvas.getContext('2d').drawImage(img, 0, 0, w, h);
+                        res(canvas.toDataURL('image/jpeg', 0.8));
+                    };
+                    img.src = e.target.result;
+                };
+                reader.readAsDataURL(file);
             });
         }
 
-        window.publishDesign = async () => {
-            if (!currentUser) return;
-            const t = document.getElementById('designTitle'), 
-                  s = document.getElementById('sourceUrl'), 
-                  d = document.getElementById('designDesc'), 
-                  u = document.getElementById('designUrl'), 
-                  m = document.getElementById('statusMsg'),
-                  btn = document.getElementById('publishBtn');
-            
-            const finalImage = pendingImg || u.value.trim();
-            if (!t.value.trim() || !finalImage) { m.textContent = "MISSING DATA"; return; }
-            
-            btn.disabled = true;
-            m.textContent = "SAVING TO CLOUD...";
-
-            try {
-                await addDoc(collection(db, 'artifacts', appId, 'public', 'data', 'designs'), { 
-                    title: t.value.trim(), 
-                    sourceUrl: s.value.trim() || "", 
-                    description: d.value.trim() || "", 
-                    url: finalImage, 
-                    createdAt: serverTimestamp() 
-                });
-                t.value = s.value = d.value = u.value = ""; 
-                pendingImg = null;
-                document.getElementById('imagePreviewContainer').classList.add('hidden');
-                m.textContent = "PUBLISHED!";
-                setTimeout(() => { m.textContent = ""; btn.disabled = false; togglePublishForm(); }, 1000);
-            } catch (err) {
-                m.textContent = "ERROR SAVING";
-                btn.disabled = false;
+        window.previewImage = async (input) => {
+            if (input.files[0]) {
+                pendingBase64 = await processImage(input.files[0]);
+                document.getElementById('previewImg').src = pendingBase64;
+                document.getElementById('previewBox').classList.remove('hidden');
+                document.getElementById('fileStatus').textContent = input.files[0].name;
             }
         };
 
-        window.delWork = id => {
-            document.getElementById('confirmModal').style.display = 'flex';
-            document.getElementById('confirmDeleteBtn').onclick = async () => {
-                await deleteDoc(doc(db, 'artifacts', appId, 'public', 'data', 'designs', id));
-                document.getElementById('confirmModal').style.display = 'none';
-            };
+        window.uploadProfile = async (input) => {
+            if (!user || !isAdmin || !input.files[0]) return;
+            const base64 = await processImage(input.files[0]);
+            await setDoc(doc(db, 'artifacts', appId, 'public', 'data', 'config', 'profile'), {
+                url: base64,
+                updatedAt: serverTimestamp()
+            });
         };
 
-        window.openLightbox = (url, title, desc, source) => {
-            document.getElementById('lightboxImage').src = url;
-            document.getElementById('lightboxTitle').textContent = title;
-            document.getElementById('lightboxDesc').textContent = desc;
-            const container = document.getElementById('lightboxLinkContainer');
-            container.innerHTML = source ? `<a href="${source}" target="_blank" class="visit-btn">Visit Project</a>` : '';
-            document.getElementById('lightboxModal').style.display = 'flex';
+        // CRUD OPERATIONS
+        window.saveProject = async () => {
+            const title = document.getElementById('pTitle').value.trim();
+            const desc = document.getElementById('pDesc').value.trim();
+            const link = document.getElementById('pLink').value.trim();
+            const status = document.getElementById('saveStatus');
+
+            if (!title || !pendingBase64) {
+                status.textContent = "Title and Image required";
+                return;
+            }
+
+            status.textContent = "Uploading to cloud...";
+            try {
+                await addDoc(collection(db, 'artifacts', appId, 'public', 'data', 'projects'), {
+                    title,
+                    desc,
+                    link,
+                    img: pendingBase64,
+                    createdAt: serverTimestamp()
+                });
+                
+                // Clear form
+                document.getElementById('pTitle').value = "";
+                document.getElementById('pDesc').value = "";
+                document.getElementById('pLink').value = "";
+                document.getElementById('previewBox').classList.add('hidden');
+                pendingBase64 = null;
+                status.textContent = "Project Published!";
+                setTimeout(() => {
+                    status.textContent = "";
+                    toggleSection('publishFormContainer');
+                }, 1500);
+            } catch (err) {
+                status.textContent = "Save failed. Try again.";
+            }
         };
 
-        window.closeLightbox = () => document.getElementById('lightboxModal').style.display = 'none';
+        window.deleteProject = async (id) => {
+            if (!isAdmin) return;
+            if (confirm("Delete this project forever?")) {
+                await deleteDoc(doc(db, 'artifacts', appId, 'public', 'data', 'projects', id));
+            }
+        };
+
+        // GALLERY RENDERING
+        function renderGallery(projects = []) {
+            const grid = document.getElementById('galleryGrid');
+            if (!grid) return;
+            
+            // If no projects passed (internal refresh), use current snapshot state if possible
+            // But usually onSnapshot handles this. If empty:
+            if (projects.length === 0) {
+                grid.innerHTML = '<div class="col-span-full py-20 text-center text-slate-400 font-bold uppercase tracking-widest">No projects to show</div>';
+                return;
+            }
+
+            grid.innerHTML = projects.map(p => `
+                <div class="group bg-white rounded-[2.5rem] overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-500 flex flex-col h-full border border-slate-50 relative">
+                    ${isAdmin ? `<button onclick="deleteProject('${p.id}')" class="absolute top-4 right-4 z-20 bg-red-500 text-white w-10 h-10 rounded-full shadow-lg hover:scale-110 transition-transform">✕</button>` : ''}
+                    <div class="aspect-video overflow-hidden bg-slate-100 cursor-zoom-in" onclick="openLightbox('${p.img.replace(/'/g, "\\'")}', '${p.title.replace(/'/g, "\\'")}', '${p.desc.replace(/'/g, "\\'")}', '${p.link}')">
+                        <img src="${p.img}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700">
+                    </div>
+                    <div class="p-8 flex flex-col flex-grow">
+                        <h3 class="text-xl font-extrabold text-slate-800 mb-3">${p.title}</h3>
+                        <p class="text-slate-500 text-sm mb-6 line-clamp-3 leading-relaxed">${p.desc}</p>
+                        <div class="mt-auto flex justify-between items-center">
+                            ${p.link ? `<a href="${p.link}" target="_blank" class="text-blue-600 font-bold text-[10px] uppercase tracking-[0.2em] hover:underline">View Source</a>` : '<span></span>'}
+                            <button onclick="openLightbox('${p.img.replace(/'/g, "\\'")}', '${p.title.replace(/'/g, "\\'")}', '${p.desc.replace(/'/g, "\\'")}', '${p.link}')" class="text-slate-300 font-bold text-[10px] uppercase tracking-[0.2em] group-hover:text-slate-900 transition-colors">Details</button>
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        window.openLightbox = (img, title, desc, link) => {
+            document.getElementById('lbImg').src = img;
+            document.getElementById('lbTitle').textContent = title;
+            document.getElementById('lbDesc').textContent = desc;
+            document.getElementById('lbLink').innerHTML = link ? 
+                `<a href="${link}" target="_blank" class="inline-block bg-blue-600 text-white px-10 py-4 rounded-2xl font-bold uppercase tracking-widest text-xs">Visit Project Site</a>` : '';
+            document.getElementById('lightbox').style.display = 'flex';
+        };
+
+        window.closeLightbox = () => document.getElementById('lightbox').style.display = 'none';
+
     </script>
 </body>
 </html>
